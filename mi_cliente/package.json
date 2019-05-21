@@ -1,0 +1,18 @@
+{
+  "name": "mi_cliente",
+  "version": "1.0.0",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "arithmetic": "^1.0.1",
+    "moment": "^2.24.0",
+    "repeat-string": "^1.6.1",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {},
+  "description": ""
+}
