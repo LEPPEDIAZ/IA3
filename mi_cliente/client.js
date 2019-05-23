@@ -1,16 +1,16 @@
-var tournamentID=1;
-var user_name='AnaDiaz';
+var tournamentID=12;
+var user_name='Ana_lucia_Diaz_Leppe';
 var tileRep = ['_', 'X', 'O'],
     N = 8;
 function randInt(a, b){
   return parseInt(Math.floor(Math.random() * (b - a) + b));
 }
 
-function ix(row, col){
-  console.log(row);
+function ix(fila, col){
+  console.log(fila);
   console.log(col);
   console.log('abcdefgh'.indexOf(col));
-  return (row - 1) * N + 'abcdefgh'.indexOf(col);
+  return (fila - 1) * N + 'abcdefgh'.indexOf(col);
 }
 
 function humanBoard(board){
@@ -26,9 +26,9 @@ function humanBoard(board){
 function validateHumanPosition(position){
   var validated = position.length === 2;
   if(validated){
-    var row = parseInt(position[0]),
+    var fila = parseInt(position[0]),
         col = position[1].toLowerCase();
-    return (1 <= row && row <= N) && ('abcdefgh'.indexOf(col) >= 0);
+    return (1 <= fila && fila <= N) && ('abcdefgh'.indexOf(col) >= 0);
   }
   return false;
 }
@@ -47,23 +47,14 @@ socket.on('connect',function(){
 
 });
 
-
-
 socket.on('ready', function(data){
   // Client is about to move
-  console.log("About to move. Board:\n");
-  console.log(humanBoard(data.board));
-  console.log("\nRequesting move...");
-  var movement = '';
-  while(!validateHumanPosition(movement)){
-    movement = prompt("Insert your next move (1A - 8G):");
-  }
   socket.emit('play', {
     player_turn_id: data.player_turn_id,
     tournament_id: tournamentID,
     game_id: data.game_id,
-    movement: ix(parseInt(movement[0]), movement[1].toLowerCase())
-
+    //movement: ix(parseInt(movement[0]), movement[1].toLowerCase())
+    movement: moverse(data.board, data.player_turn_id)
   });
 
 });
@@ -83,7 +74,183 @@ socket.on('finish', function(data){
     player_turn_id: data.player_turn_id
 
   });
-
-
-
 });
+function moverse(board,turnodeljugador){
+  var tabladejuego = []
+  for(var i=0; i<board.length; i+= 8){
+    tabladejuego.push(board.slice(i,i+8))
+    console.log(tabladejuego)
+  }
+  if(turnodeljugador==2){
+    var validarturno = ValidarMovida(tabladejuego,1,2)
+}
+  else if(turnodeljugador==1){
+      var validarturno = ValidarMovida(tabladejuego,2,1)
+  }
+  
+  //se implementa el random
+  var valoresrandom = validarturno[Math.floor(Math.random() * validarturno.length)].split(",")
+  var x = parseInt(valoresrandom[1])
+  var y = parseInt(valoresrandom[0])
+  var jugada = (y *8) +x
+  return jugada
+}
+function ValidarMovida(tabladejuego,turnodeljugador,buscador){
+  var posiblesmovidas = []
+  for(var y=0;y<tabladejuego.length;y++){
+      var fila = tabladejuego[y]
+      for(var x=0;x<fila.length;x++){
+          if(fila[x]==turnodeljugador){
+              //izquierda
+              try {
+                if(fila[x-1]==0){
+                    var position = 1
+                    while(true){
+                        try{
+                            var looking = fila[x+position]
+                        }
+                        catch(err) {break}
+                        if (looking == null){break}
+                        if(looking==buscador && !(posiblesmovidas.includes(""+(y).toString()+","+ (x-1).toString() +""))){
+                            posiblesmovidas.push(""+(y).toString()+","+ (x-1).toString() +"")
+                            break
+                        }
+                        position += 1 
+                    }
+                }
+            }catch(err) {}
+            try {
+              if(fila[x+1]==0){
+                  var position = 1
+                  while(true){
+                      try{
+                          var looking = fila[x-position]
+                      }
+                      catch(err) {break}
+                      if (looking == null){break}
+                      if(looking==buscador && !(posiblesmovidas.includes(""+(y).toString()+","+ (x+1).toString() +""))){
+                          posiblesmovidas.push(""+(y).toString()+","+ (x+1).toString() +"")
+                          break
+                      }
+                      position += 1 
+                  }
+              }
+          }catch(err) {}
+              //posicion arriba
+              try {
+                if(tabladejuego[y-1][x]==0){
+                    var position = 1
+                    while(true){
+                        try{
+                            var looking = tabladejuego[y+position][x]
+                        }
+                        catch(err) {break}
+                        if (looking == null){break}
+                        if(looking==buscador && !(posiblesmovidas.includes(""+(y-1).toString()+","+ (x).toString() +""))){
+                            posiblesmovidas.push(""+(y-1).toString()+","+ (x).toString() +"")
+                            break
+                        }
+                        position += 1 
+                    }
+
+                }
+            }catch(err) {}
+              //superior derecha
+              try {
+                  if(tabladejuego[y-1][x+1]==0){
+                      var position = 1
+                      while(true){
+                          try{
+                              var looking = tabladejuego[y+position][x-position]
+                          }
+                          catch(err) {break}
+                          if (looking == null){break}
+                          if(looking==buscador && !(posiblesmovidas.includes(""+(y-1).toString()+","+ (x+1).toString() +""))){
+                            posiblesmovidas.push(""+(y-1).toString()+","+ (x+1).toString() +"")
+                              break
+                          }
+                          position += 1 
+                      }
+                  }
+              }catch(err) {}
+              //superior izquierda
+              try {
+                  if(tabladejuego[y-1][x-1]==0){
+                      var position = 1
+                      while(true){
+                          try{
+                              var looking = tabladejuego[y+position][x+position]
+                          }
+                          catch(err) {break}
+                          if (looking == null){break}
+                          if(looking==buscador && !(posiblesmovidas.includes(""+(y-1).toString()+","+ (x-1).toString() +""))){
+                              posiblesmovidas.push(""+(y-1).toString()+","+ (x-1).toString() +"")
+                              break
+                          }
+                          position += 1 
+                      }
+                  }
+              }catch(err) {}
+              //izquierda para abajo
+              try {
+                  if(tabladejuego[y+1][x-1]==0){
+                      var position = 1
+                      while(true){
+                          try{
+                              var looking = tabladejuego[y-position][x+position]
+                          }
+                          catch(err) {break}
+                          if (looking == null){break}
+                          if(looking==buscador && !(posiblesmovidas.includes(""+(y+1).toString()+","+ (x-1).toString() +""))){
+                              posiblesmovidas.push(""+(y+1).toString()+","+ (x-1).toString() +"")
+                              break
+                          }
+                          position += 1 
+                      }
+                  }
+
+              }catch(err) {}
+              //abajo
+              try {
+                  if(tabladejuego[y+1][x]==0){
+                      var position = 1
+                      while(true){
+                          try{
+                              var looking = tabladejuego[y-position][x]
+                          }
+                          catch(err) {break}
+                          if (looking == null){break}
+                          if(looking==buscador && !(posiblesmovidas.includes(""+(y+1).toString()+","+ (x).toString() +""))){
+                              posiblesmovidas.push(""+(y+1).toString()+","+ (x).toString() +"")
+                              break
+                          }
+                          position += 1 
+                      }
+                  }
+              }catch(err) {}
+              //derecha para abajo
+              try {
+                  if(tabladejuego[y+1][x+1]==0){
+                      var position = 1
+                      while(true){
+                          try{
+                              var looking = tabladejuego[y-position][x-position]
+                          }
+                          catch(err) {break}
+                          if (looking == null){break}
+                          if(looking==buscador && !(posiblesmovidas.includes(""+(y+1).toString()+","+ (x+1).toString() +""))){
+                              posiblesmovidas.push(""+(y+1).toString()+","+ (x+1).toString() +"")
+                              break
+                          }
+                          position += 1 
+                      }
+                  }
+              }catch(err) {}
+              //derecha
+              
+          }
+      }
+  }
+  return posiblesmovidas
+}
+
