@@ -1,5 +1,5 @@
 var tournamentID=12;
-var user_name='AnaLuciaDiazLeppe3';
+var user_name='AnaLuciaDiazLeppe4';
 var tileRep = ['_', 'X', 'O'],
     N = 8;
 function randInt(a, b){
@@ -475,7 +475,7 @@ function heuristica  (tablero, maxjugador, minjugador)  {
     }
   })
   if(contadordeespaciosvacios[maxjugador] + contadordeespaciosvacios[minjugador] != 0){
-    return  (contadordeespaciosvacios[maxjugador] - contadordeespaciosvacios[minjugador]) / (contadordeespaciosvacios[maxjugador] + contadordeespaciosvacios[minjugador]) *100
+    return  (contadordeespaciosvacios[maxjugador] - contadordeespaciosvacios[minjugador]) 
   } else {
     return 0
   }
