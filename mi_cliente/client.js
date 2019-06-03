@@ -1,5 +1,5 @@
 var tournamentID=12;
-var user_name='AnaLuciaDiazLeppe';
+var user_name='AnaLuciaDiazLeppe3';
 var tileRep = ['_', 'X', 'O'],
     N = 8;
 function randInt(a, b){
@@ -262,61 +262,29 @@ function tablero8x8 (tablero) {
 }
 function chequearmovimientodeladversario (tablero, posicionentablero, futurasmovidas) {
   switch(futurasmovidas){
-    case 0: {
-      if((posicionentablero[0]-1) >= 0){
-        return tablero[posicionentablero[0]-1][posicionentablero[1]]
-      } else {
-        return -1
-      }
+    case 0: { 
+      if((posicionentablero[0]-1) >= 0){ return tablero[posicionentablero[0]-1][posicionentablero[1]]} else {return -1}
     }
     case 1: {
-      if((posicionentablero[0]+1) <= 7){
-        return tablero[posicionentablero[0]+1][posicionentablero[1]]
-      } else {
-        return -1
-      }
+      if((posicionentablero[0]+1) <= 7){ return tablero[posicionentablero[0]+1][posicionentablero[1]]} else { return -1}
     }
     case 3: {
-      if((posicionentablero[1]+1) <= 7){
-        return tablero[posicionentablero[0]][posicionentablero[1]+1]
-      } else {
-        return -1
-      }
+      if((posicionentablero[1]+1) <= 7){return tablero[posicionentablero[0]][posicionentablero[1]+1]} else {return -1}
     }
     case 2: {
-      if((posicionentablero[1]-1) >= 0){
-        return tablero[posicionentablero[0]][posicionentablero[1]-1]
-      } else {
-        return -1
-      }
+      if((posicionentablero[1]-1) >= 0){return tablero[posicionentablero[0]][posicionentablero[1]-1]} else {return -1}
     }
     case 4: {
-      if((posicionentablero[0]-1) >= 0 && (posicionentablero[1]+1) <= 7){
-        return tablero[posicionentablero[0]-1][posicionentablero[1]+1]
-      } else {
-        return -1
-      }
+      if((posicionentablero[0]-1) >= 0 && (posicionentablero[1]+1) <= 7){return tablero[posicionentablero[0]-1][posicionentablero[1]+1]} else {return -1}
     }
     case 5: {
-      if((posicionentablero[0]-1) >= 0 && (posicionentablero[1]-1) >= 0){
-        return tablero[posicionentablero[0]-1][posicionentablero[1]-1]
-      } else {
-        return -1
-      }
+      if((posicionentablero[0]-1) >= 0 && (posicionentablero[1]-1) >= 0){return tablero[posicionentablero[0]-1][posicionentablero[1]-1]} else {return -1}
     }
     case 6: {
-      if((posicionentablero[0]+1) <= 7 && (posicionentablero[1]+1) <= 7){
-        return tablero[posicionentablero[0]+1][posicionentablero[1]+1]
-      } else {
-        return -1
-      }
+      if((posicionentablero[0]+1) <= 7 && (posicionentablero[1]+1) <= 7){return tablero[posicionentablero[0]+1][posicionentablero[1]+1]} else {return -1}
     }
     case 7: {
-      if((posicionentablero[0]+1) <= 7 && (posicionentablero[1]-1) >= 0){
-        return tablero[posicionentablero[0]+1][posicionentablero[1]-1]
-      } else {
-        return -1
-      }
+      if((posicionentablero[0]+1) <= 7 && (posicionentablero[1]-1) >= 0){return tablero[posicionentablero[0]+1][posicionentablero[1]-1]} else {return -1}
     }
   }
 }
