@@ -1,5 +1,5 @@
 var tournamentID=12;
-var user_name='AnaLuciaDiazLeppe7';
+var user_name='AnaLuciaDiazLeppe8';
 var tileRep = ['_', 'X', 'O'],
     N = 8;
 function randInt(a, b){
@@ -447,6 +447,7 @@ function tactica  (tablero, jugador)  {
   }
   return tactica
 }
+//calcula el oponente, se obtienen nuevas posiciones y da la vuelta a los valores
 function RealizarTactica (tablero, moverficha, jugador) {
   let nuevoborde = []
   for(let i=0; i<tablero.length; i++){
@@ -461,9 +462,7 @@ function RealizarTactica (tablero, moverficha, jugador) {
     let difmaxymin = []
     let posiblemovida = movida(moverficha, futurasmovidas)
     while(posiblemovida !== null && nuevoborde[posiblemovida[0]][posiblemovida[1]] !== 0){
-      if(nuevoborde[posiblemovida[0]][posiblemovida[1]] === oponente){
-        difmaxymin.push(posiblemovida)
-      } else {
+      if(nuevoborde[posiblemovida[0]][posiblemovida[1]] !== oponente){
         if(nuevoborde[posiblemovida[0]][posiblemovida[1]] === jugador){
           if(difmaxymin.length !== 0){
             difmaxymin.map((posicion) => {
@@ -472,6 +471,8 @@ function RealizarTactica (tablero, moverficha, jugador) {
             break
           }
         }
+      } else {
+        difmaxymin.push(posiblemovida)
       }
       posiblemovida = movida(posiblemovida, futurasmovidas)
     }
