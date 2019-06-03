@@ -1,5 +1,5 @@
 var tournamentID=12;
-var user_name='AnaLuciaDiazLeppe';
+var user_name='AnaLuciaDiazLeppe7';
 var tileRep = ['_', 'X', 'O'],
     N = 8;
 function randInt(a, b){
@@ -247,7 +247,7 @@ function ValidarMovida(tabladejuego,turnodeljugador,buscador){
   }
   return posiblesmovidas
 }
-const underscore = require('underscore')
+var underscore = require('underscore')
 function tablero8x8 (tablero) { 
   return([
   tablero.slice(0,8),
@@ -358,7 +358,7 @@ function validacionfinal (posicionentablero, movidasvalidas) {
   return false
 }
 
-const todaslasdirecciones = [0, 1, 2, 3, 4, 5, 6, 7]
+var todaslasdirecciones = [0, 1, 2, 3, 4, 5, 6, 7]
 function movida (posicionentablero, futurasmovidas) {
   switch(futurasmovidas){
     case 0: {
@@ -419,8 +419,10 @@ function movida (posicionentablero, futurasmovidas) {
     }
   }
 }
+//filtra los estados del oponente con espacios vacios
+//chequea el extremo opuesto, si hay valor se agrega el espacio vacio a movimientos validos.
 function tactica  (tablero, jugador)  {
-  const oponente = jugador === 1 ? 2 : 1
+  var oponente = jugador === 1 ? 2 : 1
   let tactica = []
   for(let y=0; y<tablero.length; y++){
     for(let x=0; x<tablero[0].length; x++){
@@ -453,7 +455,7 @@ function RealizarTactica (tablero, moverficha, jugador) {
       nuevoborde[i].push(tablero[i][j])
     }
   }
-  const oponente = jugador === 1 ? 2 : 1
+  var oponente = jugador === 1 ? 2 : 1
   nuevoborde[moverficha[0]][moverficha[1]] = jugador
   todaslasdirecciones.map((futurasmovidas) => {
     let difmaxymin = []
@@ -492,8 +494,8 @@ function oponente (id) {
   }
 }
 function heuristica  (tablero, maxjugador, minjugador)  {
-  const tablerodelserver = underscore.flatten(tablero)
-  const contadordeespaciosvacios = underscore.countBy(tablerodelserver, (posicionentablero) => {
+  var tablerodelserver = underscore.flatten(tablero)
+  var contadordeespaciosvacios = underscore.countBy(tablerodelserver, (posicionentablero) => {
     if(posicionentablero === 1){
       return 1
     } else {
@@ -513,45 +515,32 @@ function heuristica  (tablero, maxjugador, minjugador)  {
 function MiniMax  (tablero, maxjugador, minjugador, alpha, beta, tipo,profundidad)  {
   let movimientosdelnodo
   let parentnode
-  if(tipo === 1){
-    movimientosdelnodo = tactica(tablero, maxjugador)
-  } else {
+  let movidasdeloponente
+  //validar movidas para el jugador actual
+  if(tipo === 0){
     movimientosdelnodo = tactica(tablero, minjugador)
-  }
-  if(movimientosdelnodo.length === 0){
-   
-    let movidasdeloponente
-    if(tipo === 1){
-      movidasdeloponente = tactica(tablero, minjugador)
-    } else {
-      movidasdeloponente = tactica(tablero, maxjugador)
-    }
-    if(movidasdeloponente.length === 0){
-      return [heuristica(tablero, maxjugador, minjugador), -1]
-    } else {
-   
-      return MiniMax(tablero, maxjugador, minjugador, alpha, beta, opuestos(tipo), tipo, profundidad)
-    }
   } else {
+    movimientosdelnodo = tactica(tablero, maxjugador)
+  }
+  if(movimientosdelnodo.length !== 0){
+    //ve si el player tiene movimientos validos
     let valordelnodo
     let movernodo
     let moverValor
     let nuevotablero
-    if(tipo === 1){
-      valordelnodo = -Infinity
-      movernodo = -1
-    } else {
+    if(tipo !== 1){
       valordelnodo = Infinity
       movernodo = -1
+    } else {
+      valordelnodo = -Infinity
+      movernodo = -1
     }
-
     for(let i=0; i<movimientosdelnodo.length; i++){
       if(parentnode === 0 && tipo === 1){
         if(valordelnodo > beta){
           continue
         }
       }
-
       if(parentnode === 1 && tipo === 0){
         if(valordelnodo < alpha){
           continue
@@ -562,7 +551,6 @@ function MiniMax  (tablero, maxjugador, minjugador, alpha, beta, tipo,profundida
       } else {
         nuevotablero = RealizarTactica(tablero, movimientosdelnodo[i], minjugador)
       }
-  
       if(profundidad !== 0){
         moverValor = MiniMax(nuevotablero, maxjugador, minjugador, alpha, beta, opuestos(tipo), tipo, profundidad - 1)
       } else {
@@ -570,6 +558,7 @@ function MiniMax  (tablero, maxjugador, minjugador, alpha, beta, tipo,profundida
       }
       if(tipo === 1){
         if(moverValor[0] > valordelnodo){
+          //update al maximizador
           valordelnodo = moverValor[0]
           movernodo = movimientosdelnodo[i]
           if(moverValor[0] > alpha){
@@ -578,6 +567,7 @@ function MiniMax  (tablero, maxjugador, minjugador, alpha, beta, tipo,profundida
         }
       } else {
         if(moverValor[0] < valordelnodo){
+          //update al minimizador
           valordelnodo = moverValor[0]
           movernodo = movimientosdelnodo[i]
           if(moverValor[0] < beta){
@@ -586,8 +576,19 @@ function MiniMax  (tablero, maxjugador, minjugador, alpha, beta, tipo,profundida
         }
       }
     }
-
     return [valordelnodo, movernodo]
+  }else {
+    //chequea si el movimientos validos del oponente  entonces tenemos una hoja
+    if(tipo === 0){
+      movidasdeloponente = tactica(tablero, maxjugador)
+    } else {
+      movidasdeloponente = tactica(tablero, minjugador)
+    }
+    if(movidasdeloponente.length !== 0){
+      return MiniMax(tablero, maxjugador, minjugador, alpha, beta, opuestos(tipo), tipo, profundidad)
+    } else {
+      return [heuristica(tablero, maxjugador, minjugador), -1]
+    }
   }
 }
 function ParsearTablero (posicionentablero) {
