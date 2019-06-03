@@ -1,0 +1,1 @@
+node ./bin/www --tid=12 --rrt=2 --game=othello
