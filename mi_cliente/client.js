@@ -1,5 +1,5 @@
 var tournamentID=12;
-var user_name='AnaLuciaDiazLeppe8';
+var user_name='AnaLuciaDiazLeppe';
 var tileRep = ['_', 'X', 'O'],
     N = 8;
 function randInt(a, b){
@@ -260,7 +260,6 @@ function tablero8x8 (tablero) {
   tablero.slice(56,64)
 ])
 }
-
 function chequearmovimientodeladversario (tablero, posicionentablero, futurasmovidas) {
   switch(futurasmovidas){
     case 0: {
@@ -497,11 +496,11 @@ function oponente (id) {
 function heuristica  (tablero, maxjugador, minjugador)  {
   var tablerodelserver = underscore.flatten(tablero)
   var contadordeespaciosvacios = underscore.countBy(tablerodelserver, (posicionentablero) => {
-    if(posicionentablero === 1){
-      return 1
+    if(posicionentablero === 2){
+      return 2
     } else {
-      if(posicionentablero === 2){
-        return 2
+      if(posicionentablero === 1){
+        return 1
       } else {
         return 0
       }
@@ -593,7 +592,7 @@ function MiniMax  (tablero, maxjugador, minjugador, alpha, beta, tipo,profundida
   }
 }
 function ParsearTablero (posicionentablero) {
-  return(posicionentablero[0]*8+posicionentablero[1])
+  return(posicionentablero[1]+posicionentablero[0]*8)
 }
 
 
