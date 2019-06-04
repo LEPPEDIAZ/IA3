@@ -1,5 +1,5 @@
-var tournamentID=12;
-var user_name='AnaLuciaDiazLeppe4';
+var tournamentID=1234;
+var user_name='AnaLuciaDiazLeppe';
 var tileRep = ['_', 'X', 'O'],
     N = 8;
 function randInt(a, b){
@@ -30,7 +30,7 @@ function validateHumanPosition(position){
   }
   return false;
 }
-var socket = require('socket.io-client')('http://localhost:4000');
+var socket = require('socket.io-client')('http://192.168.1.141:4000');
 socket.on('connect', function(){
   console.log("Conectado: " + user_name);
   socket.emit('signin', {
@@ -87,7 +87,7 @@ function moverserandom(tablero,turnodeljugador){
   return jugada
 }
 function EstrategiaMiniMax  (tablero, maxjugador) {
-  return ParsearTablero(MiniMax(tablero8x8(tablero), maxjugador, oponente(maxjugador), -Infinity, Infinity, 1, 4)[1])
+  return ParsearTablero(MiniMax(tablero8x8(tablero), maxjugador, oponente(maxjugador), -Infinity, Infinity, 1, 1)[1])
 }
 function ValidarMovida(tabladejuego,turnodeljugador,buscador){
   var posiblesmovidas = []
